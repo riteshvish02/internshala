@@ -2,6 +2,10 @@ require("dotenv").config({path:"./.env"})
 const express = require('express');
 const app = express();
 
+app.use(express.json())
+app.use(express.urlencoded({extended:false}))
+
+require("./models/dbconfig").dbconnection()
 app.use(require("morgan")("tiny"))
 app.use("/",require("./routers/indexRoute"))
 
