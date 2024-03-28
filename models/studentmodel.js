@@ -27,6 +27,10 @@ Studentschema.pre("save",function(){
     let salt = bcrypt.genSaltSync(10)
     this.password = bcrypt.hashSync(this.password,salt)
 })
+
+Studentschema.methods.comparepassword = (password)=>{
+    return bcrypt.compareSync(password,this.password)
+}
 const Student = mongoose.model("Student",Studentschema)
 
 module.exports = Student;
