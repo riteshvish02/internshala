@@ -21,6 +21,9 @@ const Studentschema = mongoose.Schema({
 },{timestamps:true})
 
 Studentschema.pre("save",function(){
+    if(!this.isModified("password")){
+        return;
+    }
     let salt = bcrypt.genSaltSync(10)
     this.password = bcrypt.hashSync(this.password,salt)
 })
