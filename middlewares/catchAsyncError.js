@@ -1,3 +1,3 @@
-exports.catchAsyncError = (func)=> (res,req,next)=> {
-   Promise.resolve( func(res,req,next)).catch(next);
+exports.catchAsyncError = (func)=> (req,res,next)=> {
+   Promise.resolve( func(req,res,next)).catch(next);
 }

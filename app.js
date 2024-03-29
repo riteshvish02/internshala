@@ -4,6 +4,16 @@ const app = express();
 
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
+const session = require("express-session");
+const cookieparser = require("cookie-parser");
+
+app.use(session({
+    resave: true,
+    saveUninitialized:true,
+    secret: process.env.SESSION_SECRET,
+}))
+
+app.use(cookieparser());
 
 require("./models/dbconfig").dbconnection()
 app.use(require("morgan")("tiny"))
