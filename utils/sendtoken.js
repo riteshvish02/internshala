@@ -6,3 +6,4 @@ exports.sendtoken = function(student,statusCode,res) {
    }
    res.status(statusCode).cookie("token",token,options).json({Succes:true,token,id:student._id})
 }
+

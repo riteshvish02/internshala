@@ -5,7 +5,7 @@ const StudentModel = require("../models/studentmodel");
 const ErrorHandler = require("../utils/ErrorHandler");
 
 exports.home = catchAsyncError(async (req, res) => {
-  res.json({ message: 'welcome to internshala' });
+  res.json({ message: 'Secure homepage' });
 })
 
 exports.studentsignup = catchAsyncError(async (req, res) => {
@@ -14,8 +14,14 @@ exports.studentsignup = catchAsyncError(async (req, res) => {
 //       res.status(200).json(Student)
 })
 
+exports.Currentstudent = catchAsyncError(async (req, res) => {
+        const Student = await StudentModel.findById(req.id).exec()
+        res.status(200).json(Student)
+  })
+  
+
 exports.studentsignin = catchAsyncError(async (req,res,next) => {
-        const Student = await  StudentModel.findOne({email:req.body.email})
+        const Student = await StudentModel.findOne({email:req.body.email})
         .select("+password")
         .exec()
         if(!Student){
@@ -32,5 +38,6 @@ exports.studentsignin = catchAsyncError(async (req,res,next) => {
 })
 
 exports.studentsignout = catchAsyncError(async (req, res,next) => {
-        res.json({ message: 'internshala' });
+        res.clearCookie("token")
+        res.json({ message: 'SignOut successfully' });
 })
