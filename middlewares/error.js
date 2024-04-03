@@ -5,5 +5,6 @@ exports.generatedError = (err,req,res,next)=>{
     ){
         err.message = "Student with this email already exists"
     }
+    // console.log(err)
     res.status(statusCode).json({message:err.message,errName:err.name});
 }

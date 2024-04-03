@@ -1,8 +1,10 @@
 const { catchAsyncError } = require("../middlewares/catchAsyncError");
 const {sendtoken} = require("../utils/sendtoken")
+const {sendmail} = require("../utils/nodemailer")
 
 const StudentModel = require("../models/studentmodel");
 const ErrorHandler = require("../utils/ErrorHandler");
+const { response } = require("express");
 
 exports.home = catchAsyncError(async (req, res) => {
   res.json({ message: 'Secure homepage' });
@@ -36,6 +38,17 @@ exports.studentsignin = catchAsyncError(async (req,res,next) => {
 
         // res.status(200).json(Student) 
 })
+
+exports.studentsendmail = catchAsyncError(async (req, res,next) => {
+        const Student = await StudentModel.findOne({email:req.body.email}).exec();
+        if(!Student){
+                return next(new ErrorHandler("User with this email if not found",404) )
+        }
+        const url = `${req.protocol}://${req.get("host")}/student/forget-link/${Student.id}`
+        sendmail(req,res,url,next)
+        res.json({Student,url})
+ })
+  
 
 exports.studentsignout = catchAsyncError(async (req, res,next) => {
         res.clearCookie("token")
