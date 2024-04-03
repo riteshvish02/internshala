@@ -46,21 +46,37 @@ exports.studentsendmail = catchAsyncError(async (req, res,next) => {
         }
         const url = `${req.protocol}://${req.get("host")}/student/forget-link/${Student.id}`
         sendmail(req,res,url,next)
+        Student.resetPasswordToken = "1"
+        await Student.save()
         res.json({Student,url})
  })
   
 
 
- exports.studentforgetlink = catchAsyncError(async (req, res,next) => {
+exports.studentforgetlink = catchAsyncError(async (req, res,next) => {
         const Student = await StudentModel.findById(req.params.id).exec();
         if(!Student){
                 return next(new ErrorHandler("User with this email if not found",404) )
         }
-        Student.password = req.body.password;
-        await Student.save();
+        if(Student.resetPasswordToken == "1"){
+                Student.password = req.body.password;
+                Student.resetPasswordToken = "0"
+                await Student.save();
+        }else{
+          return next(new ErrorHandler("This link is already used",404) )
+        }
         res.json({message:"successfully changed password"})
  })
-  
+
+exports.studentresetpassword = catchAsyncError(async (req, res,next) => {
+        const Student = await StudentModel.findById(req.id).exec();
+        if(!Student){
+                return next(new ErrorHandler("User not found",500) )
+        }
+        Student.password = req.body.password;
+        await Student.save()
+        sendtoken(Student,200,res)
+ })
 
 
 exports.studentsignout = catchAsyncError(async (req, res,next) => {
