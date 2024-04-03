@@ -50,6 +50,19 @@ exports.studentsendmail = catchAsyncError(async (req, res,next) => {
  })
   
 
+
+ exports.studentforgetlink = catchAsyncError(async (req, res,next) => {
+        const Student = await StudentModel.findById(req.params.id).exec();
+        if(!Student){
+                return next(new ErrorHandler("User with this email if not found",404) )
+        }
+        Student.password = req.body.password;
+        await Student.save();
+        res.json({message:"successfully changed password"})
+ })
+  
+
+
 exports.studentsignout = catchAsyncError(async (req, res,next) => {
         res.clearCookie("token")
         res.json({ message: 'SignOut successfully' });

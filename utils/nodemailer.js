@@ -27,7 +27,7 @@ exports.sendmail = (req,res,url,next)=>{
     if(err){
         return next(new ErrorHandler(err,500))
     }
-    console.log(info)
+    // console.log(info)
     return res.status(200).json({message:"email sent successfully",url})
  })
 }
