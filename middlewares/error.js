@@ -1,5 +1,6 @@
 exports.generatedError = (err,req,res,next)=>{
     const statusCode = res.statusCode || 500;
+    // console.log(err)
     if(
         err.name == "MongoServerError" && err.message.includes("E11000 duplicate key")
     ){

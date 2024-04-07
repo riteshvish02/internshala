@@ -15,6 +15,9 @@ app.use(session({
 
 app.use(cookieparser());
 
+const fileupload = require("express-fileupload");
+app.use(fileupload())
+
 require("./models/dbconfig").dbconnection()
 app.use(require("morgan")("tiny"))
 app.use("/",require("./routers/indexRoute"))

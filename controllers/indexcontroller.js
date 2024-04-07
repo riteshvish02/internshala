@@ -4,7 +4,8 @@ const {sendmail} = require("../utils/nodemailer")
 
 const StudentModel = require("../models/studentmodel");
 const ErrorHandler = require("../utils/ErrorHandler");
-const { response } = require("express");
+const imagekit = require("../utils/imagekit").initImagekit();
+const path = require("path");
 
 exports.home = catchAsyncError(async (req, res) => {
   res.json({ message: 'Secure homepage' });
@@ -93,6 +94,20 @@ exports.studentresetpassword = catchAsyncError(async (req, res,next) => {
         .status(200)
         .json(Student)
  })
+ exports.studentavtar = catchAsyncError(async (req, res,next) => {
+        const Student = await StudentModel.findById(req.params.id).exec();
+        const file = req.files.avtar
+        const modifiedfilename = `resumebuilder-${Date.now()}${path.extname(file.name)}`
+        const {fileId,url} = await imagekit.upload({
+                file:file.data,
+                fileName:modifiedfilename,
+        })
+         Student.avtar = {fileId,url}
+         await Student.save()
+         res.status(200).json({success:true,message:"image uploaded Successfully"})
+ })
+
+
 exports.studentsignout = catchAsyncError(async (req, res,next) => {
         res.clearCookie("token")
         res.json({ message: 'SignOut successfully' });
