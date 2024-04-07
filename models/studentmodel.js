@@ -2,12 +2,39 @@ const mongoose = require("mongoose")
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 const Studentschema = new mongoose.Schema({
-    name:{
-       required:[true,"Name is required"],
+    firstname:{
+       required:[true,"FirstName is required"],
        type:String,
        min:[2,"Name must be have at least 2 characters"],
        max:[20,"Name must be less than 20 characters"]
         },
+    lastname:{
+        required:[true,"LastName is required"],
+        type:String,
+        min:[2,"Name must be have at least 2 characters"],
+        max:[20,"Name must be less than 20 characters"]
+    
+    },
+    avtar:{
+        type:String,
+    },
+    contact:{
+      type:String,
+      required: [true, "contact is required"],
+      minLength:[10,"contact must be 10 characters long"],
+      maxLength:[10,"contact must be 10 characters long"],
+    },
+    gender:{
+        type:String,
+        required: [true, "gender is required"],
+        enum: ["male", "female","others"],
+    },
+    city:{
+        type:String,
+        required: [true, "city is required"],
+        minLength:[2,"city must be at least 2 characters"],
+        maxLength:[8,"city must be less than 8 characters"]
+    },
     email:{
         unique: true,
         type: String,

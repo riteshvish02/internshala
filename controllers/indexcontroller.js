@@ -78,7 +78,21 @@ exports.studentresetpassword = catchAsyncError(async (req, res,next) => {
         sendtoken(Student,200,res)
  })
 
-
+ exports.studentupdate= catchAsyncError(async (req, res,next) => {
+        const Student = await StudentModel.findByIdAndUpdate(
+          req.params.id,
+          req.body,
+          { new: true}
+        ).exec();
+        if(!Student){
+                return next(new ErrorHandler("User not found",500) )
+        }
+       
+        await Student.save()
+        res
+        .status(200)
+        .json(Student)
+ })
 exports.studentsignout = catchAsyncError(async (req, res,next) => {
         res.clearCookie("token")
         res.json({ message: 'SignOut successfully' });
