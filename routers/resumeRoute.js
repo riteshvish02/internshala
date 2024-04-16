@@ -4,12 +4,14 @@ const Router = express.Router();
 const {
     resume,
     addeducation,
-    editeducation
+    editeducation,
+    deleteeducation
 } = require("../controllers/resumecontroller");
 const {isAuthenticated} = require("../middlewares/auth")
-Router.get('/',isAuthenticated,resume );
-Router.get('/add-edu',isAuthenticated,addeducation );
-Router.get('/edit-edu',isAuthenticated,editeducation );
+Router.post('/',isAuthenticated,resume );
+Router.post('/add-edu',isAuthenticated,addeducation );
+Router.post('/edit-edu/:id',isAuthenticated,editeducation );
+Router.post('/del-edu/:id',isAuthenticated,deleteeducation);
 
 
 
