@@ -11,7 +11,7 @@ const {home,
     studentresetpassword,
     studentupdate,
     studentavtar
-} = require("../controllers/indexcontroller");
+} = require("../controllers/studentcontroller");
 const {isAuthenticated} = require("../middlewares/auth")
 Router.get('/',isAuthenticated,home );
 

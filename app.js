@@ -20,7 +20,8 @@ app.use(fileupload())
 
 require("./models/dbconfig").dbconnection()
 app.use(require("morgan")("tiny"))
-app.use("/",require("./routers/indexRoute"))
+app.use("/api",require("./routers/studentRoute"))
+app.use("/resume",require("./routers/resumeRoute"))
 
 const ErrorHandler = require("./utils/ErrorHandler")
 const {generatedError} = require("./middlewares/error")

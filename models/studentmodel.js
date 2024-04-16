@@ -56,6 +56,17 @@ const Studentschema = new mongoose.Schema({
         minLength:[6,"password must be at least 6 characters"],
         maxLength:[16,"password must be at most 6 characters"]
       },
+      resume:{
+        education:[],
+        internships:[],
+        job:[],
+        responsibilities:[],
+        courses:[],
+        projects:[],
+        skills:[],
+        accomplishments:[]
+
+      },
       resetPasswordToken:{
         type: String,
          default:"0"
