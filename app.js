@@ -22,6 +22,7 @@ require("./models/dbconfig").dbconnection()
 app.use(require("morgan")("tiny"))
 app.use("/api",require("./routers/studentRoute"))
 app.use("/resume",require("./routers/resumeRoute"))
+app.use("/api/employee",require("./routers/employeeRoute"))
 
 const ErrorHandler = require("./utils/ErrorHandler")
 const {generatedError} = require("./middlewares/error")
