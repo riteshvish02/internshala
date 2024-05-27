@@ -32,7 +32,7 @@ exports.studentsignin = catchAsyncError(async (req,res,next) => {
         }
         const isMatch =  Student.comparepassword(req.body.password)
         if(!isMatch){
-                return next(new ErrorHandler("Wrong crendentials",404))
+           return next(new ErrorHandler("Wrong crendentials",404))
         }
         // console.log(req.body);
         sendtoken(Student,200,res)
@@ -96,12 +96,17 @@ exports.studentresetpassword = catchAsyncError(async (req, res,next) => {
  })
  exports.studentavtar = catchAsyncError(async (req, res,next) => {
         const Student = await StudentModel.findById(req.params.id).exec();
+       
+        console.log(req.files);
         const file = req.files.avtar
         const modifiedfilename = `resumebuilder-${Date.now()}${path.extname(file.name)}`
         const {fileId,url} = await imagekit.upload({
                 file:file.data,
                 fileName:modifiedfilename,
         })
+        if(Student.avtar.fileId !== ""){
+                await imagekit.deleteFile(Student.avtar.fileId)
+        }
          Student.avtar = {fileId,url}
          await Student.save()
          res.status(200).json({success:true,message:"image uploaded Successfully"})
