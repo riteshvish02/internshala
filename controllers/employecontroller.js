@@ -45,7 +45,7 @@ exports.employeesendmail = catchAsyncError(async (req, res,next) => {
         if(!Employee){
                 return next(new ErrorHandler("User with this email if not found",404) )
         }
-        const url = `${req.protocol}://${req.get("host")}/Employee/forget-link/${Employee.id}`
+        const url = `${req.protocol}://${req.get("host")}/employee/forget-link/${Employee.id}`
         sendmail(req,res,url,next)
         Employee.resetPasswordToken = "1"
         await Employee.save()
@@ -98,16 +98,16 @@ exports.employeeresetpassword = catchAsyncError(async (req, res,next) => {
         const Employee = await EmployeeModel.findById(req.params.id).exec();
        
         console.log(req.files);
-        const file = req.files.avtar
+        const file = req.files.organizationlogo
         const modifiedfilename = `resumebuilder-${Date.now()}${path.extname(file.name)}`
         const {fileId,url} = await imagekit.upload({
                 file:file.data,
                 fileName:modifiedfilename,
         })
         if(Employee.organizationlogo.fileId !== ""){
-                await imagekit.deleteFile(Employee.avtar.fileId)
+                await imagekit.deleteFile(Employee.organizationlogo.fileId)
         }
-         Employee.avtar = {fileId,url}
+         Employee.organizationlogo = {fileId,url}
          await Employee.save()
          res.status(200).json({success:true,message:"image uploaded Successfully"})
  })
